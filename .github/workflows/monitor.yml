@@ -16,6 +16,7 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: last_status.json
+          key: claude-status-${{ github.run_number }}
           restore-keys: |
             claude-status-
 

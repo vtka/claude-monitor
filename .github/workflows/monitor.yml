@@ -8,11 +8,16 @@ name: Claude API Monitor
 jobs:
   check:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Restore cached status
+        uses: actions/cache/restore@v4
+        with:
+          path: last_status.txt
+          restore-keys: |
+            claude-status-
 
       - name: Check Claude API status
         env:
@@ -20,9 +25,8 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: python3 check_status.py
 
-      - name: Commit status if changed
-        run: |
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git config user.name "github-actions[bot]"
-          git add last_status.txt
-          git diff --staged --quiet || (git commit -m "chore: update status" && git push)
+      - name: Save status cache
+        uses: actions/cache/save@v4
+        with:
+          path: last_status.txt
+          key: claude-status-${{ github.run_number }}

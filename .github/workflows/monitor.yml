@@ -4,6 +4,11 @@ name: Claude API Monitor
   schedule:
     - cron: "*/5 * * * *"
   workflow_dispatch:
+    inputs:
+      test:
+        description: 'Send a test notification to Telegram'
+        type: boolean
+        default: false
 
 jobs:
   check:
@@ -24,6 +29,7 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TEST_MODE: ${{ inputs.test }}
         run: python3 check_status.py
 
       - name: Save status cache

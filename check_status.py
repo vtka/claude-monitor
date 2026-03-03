@@ -97,6 +97,25 @@ def format_resolved_incident(incident):
 
 
 def main():
+    if os.environ.get("TEST_MODE") == "true":
+        send_telegram(
+            "🧪 <b>Test notification</b>\n"
+            "\n"
+            "Your Claude API monitor is set up correctly.\n"
+            "\n"
+            "⚠️ <b>Example incident: Investigating</b>\n"
+            "\n"
+            "<b>Elevated errors in claude.ai, Claude Code</b>\n"
+            "We are investigating elevated error rates across the platform.\n"
+            "\n"
+            "🔴 claude.ai\n"
+            "🔴 Claude Code\n"
+            "\n"
+            '<a href="https://status.anthropic.com">View status page</a>'
+        )
+        print("Test notification sent.")
+        return
+
     summary = fetch(SUMMARY_URL)
     unresolved = fetch(INCIDENTS_URL)
 

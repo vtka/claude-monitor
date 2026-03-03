@@ -15,7 +15,7 @@ jobs:
       - name: Restore cached status
         uses: actions/cache/restore@v4
         with:
-          path: last_status.txt
+          path: last_status.json
           restore-keys: |
             claude-status-
 
@@ -28,5 +28,5 @@ jobs:
       - name: Save status cache
         uses: actions/cache/save@v4
         with:
-          path: last_status.txt
+          path: last_status.json
           key: claude-status-${{ github.run_number }}
